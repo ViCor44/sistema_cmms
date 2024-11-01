@@ -95,7 +95,7 @@ $sent_messages = $stmt->get_result();
         <h2>Caixa de Entrada</h2>
 
         <div class="d-flex mb-3">
-            <a href="sens_message.php" class="btn btn-primary me-2">Nova Mensagem</a>
+            <a href="send_message.php" class="btn btn-primary me-2">Nova Mensagem</a>
             <a href="redirect_page.php" class="btn btn-secondary">Voltar</a>
         </div>
 

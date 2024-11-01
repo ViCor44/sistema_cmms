@@ -22,7 +22,7 @@ if (isset($_POST['search'])) {
 // Lógica da pesquisa
 if ($is_admin == 'admin') {
     // Superuser vê todos os relatórios e pode pesquisar por detalhes e nome do técnico
-    $sql = "SELECT r.id, r.report_date, r.execution_date, r.report_details, r.pdf_generated, r.printed, r.technician_id, 
+    $sql = "SELECT r.id, r.report_date, r.execution_date, r.report_details, r.report_type, r.pdf_generated, r.printed, r.technician_id, 
                CONCAT(u.first_name, ' ', u.last_name) AS technician_name
             FROM reports r 
             JOIN users u ON r.technician_id = u.id
@@ -37,8 +37,8 @@ if ($is_admin == 'admin') {
     $stmt->bind_param("ss", $search_param, $search_param);
 } else {
     // Usuário comum vê apenas seus próprios relatórios e pode pesquisar por detalhes
-    $sql = "SELECT r.id, r.report_date, r.execution_date, r.report_details, r.pdf_generated, r.printed, r.technician_id, 
-               CONCAT(u.first_name, ' ', u.last_name) AS technician_name
+    $sql = "SELECT r.id, r.report_date, r.execution_date, r.report_details, r.report_type, r.pdf_generated, r.printed, r.technician_id, 
+               CONCAT(u.first_name, ' ', u.last_name) AS technician_name 
             FROM reports r 
             JOIN users u ON r.technician_id = u.id
             WHERE r.technician_id = ? AND r.report_details LIKE ?
@@ -136,8 +136,15 @@ $result = $stmt->get_result(); // O resultado da execução da query é atribuí
         <div class="search-container">
             <form method="POST" action="">
                 <input type="text" name="search" class="search-input" placeholder="Pesquisar detalhes do relatório" value="<?php echo htmlspecialchars($search_query); ?>">
+                <select name="report_type" class="form-select">
+                    <option value="">Todos os Tipos</option>
+                    <option value="manutencao">Manutenção</option>
+                    <option value="avaria">Avaria</option>
+                    <option value="diario">Diário</option>
+                    <option value="autoprotecao">Medidas de Autoproteção</option>
+                </select>
                 <input type="submit" value="Pesquisar" class="search-button btn btn-primary">
-                <a href="list_reports.php" class="clear-button btn btn-secondary">Limpar</a> <!-- Botão para limpar -->
+                <a href="list_reports.php" class="clear-button btn btn-secondary">Limpar</a>
             </form>
         </div>
 
@@ -150,6 +157,7 @@ $result = $stmt->get_result(); // O resultado da execução da query é atribuí
                             <tr>
                                 <th>Número</th>
                                 <th>Técnico</th>
+                                <th>Tipo de Relatório</th>
                                 <th>Data do Relatório</th>
                                 <th>Detalhes</th>
                                 <th>Ações</th>
@@ -161,6 +169,7 @@ $result = $stmt->get_result(); // O resultado da execução da query é atribuí
                             <tr>
                                 <td class="center-text"><?= htmlspecialchars($row['id']); ?></td>
                                 <td class="center-text"><?= htmlspecialchars($row['technician_name']); ?></td>
+                                <td class="center-text"><?= htmlspecialchars($row['report_type']); ?></td>
                                 <td class="center-text"><?= htmlspecialchars($row['report_date']); ?></td>
                                 <td>
                                     <span data-bs-toggle="tooltip" title="<?= htmlspecialchars($row['report_details']); ?>">

@@ -95,8 +95,8 @@ $stmt_ot->close();
         <div class="col-md-4">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">Sistema de Relatórios Diários</h5>
-                    <p class="card-text">Ver e redigir relatórios diários.</p>
+                    <h5 class="card-title">Sistema de Relatórios</h5>
+                    <p class="card-text">Ver e redigir relatórios.</p>
                     <div class="d-grid gap-2 d-md-flex justify-content-md-start">
                         <a href="list_reports.php" class="btn btn-primary me-md-2">Listar Relatórios</a>
                         <a href="create_report.php" class="btn btn-secondary">Novo Relatório</a>
